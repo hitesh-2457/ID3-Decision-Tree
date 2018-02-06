@@ -1,6 +1,7 @@
 import sys
 
-from readData import parseData
+from node import Tree
+from readData import ParseData
 
 
 class Id3:
@@ -14,9 +15,7 @@ class Id3:
         main.py <L> <K> <training_set.csv> <validation_set.csv> <test_set.csv> <flag_to_print>
         """
         try:
-            self.trainData = None
-            self.valData = None
-            self.testData = None
+            self.dataParser = ParseData()
 
             self.L = sys.argv[1]
             self.K = sys.argv[2]
@@ -31,16 +30,10 @@ class Id3:
         """
         The Main function on the program
         """
-        self.fetchData()
-
-    def fetchData(self):
-        """
-        Fetches all the data from the training, validation and test data sets.
-        """
-        dataParser = parseData()
-        self.trainData = dataParser.parseFile(self.trainFile)
-        self.valData = dataParser.parseFile(self.valFile)
-        self.testData = dataParser.parseFile(self.testFile)
+        data_set = self.dataParser.parse_file(self.trainFile)
+        tree = Tree(data_set)
+        tree.train_id3(1)
+        tree.print_tree()
 
 
 if __name__ == "__main__":

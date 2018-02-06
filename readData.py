@@ -2,24 +2,25 @@ import numpy as np
 import pandas as pd
 
 
-class model:
+class Model:
     """
     The model that wraps the DataFrame along with the list of features and the target.
     """
 
-    def __init__(self, dFrame):
+    def __init__(self, d_frame):
         """
         The constructor that initializes the model.
         Args:
             dFrame: DataFrame from pandas
-            :type dFrame: DataFrame
+            :type d_frame: DataFrame
         """
-        self.features = list(dFrame.columns.values)
+        self.features = list(d_frame.columns.values)
         self.targetName = self.features.pop(-1)
-        self.dataFrame = dFrame
+        self.dataFrame = d_frame
+        self.targetPosVal = list(d_frame[self.targetName].unique())
 
 
-class parseData:
+class ParseData:
     """
     The class responsible to parse the data from the CSV file.
     """
@@ -28,37 +29,17 @@ class parseData:
         """
         The constructor for initializing.
         """
-        self.headerList = [];
+        self.headerList = []
 
-    def parseFile(self, fileName):
+    def parse_file(self, file_name):
         """
         Reads all the data from the "fileName" :argument and parses it to the model
         Args:
-            fileName: string, the file name along with path to the file.
+            file_name (str): string, the file name along with path to the file.
 
         Returns: an instance of the model class.
-        :type fileName: str
-
         """
-        ar = np.recfromcsv(fileName)
-        data = pd.DataFrame(data=ar, dtype=bool)
+        ar = np.recfromcsv(file_name)
+        data = pd.DataFrame(data=ar)
 
-        return model(data)
-        # try:
-        #     tData = []
-        #     header = True
-        #     fp = open(fileName, 'r')
-        #
-        #     for line in fp:
-        #         data = line.strip().split(',')
-        #         if header:
-        #             self.headerList = data
-        #             header = not header
-        #         else:
-        #             tData.append(model(data))
-        #
-        #     fp.close()
-        #     return tData
-        #
-        # except Exception as e:
-        #     sys.exit("Failed to open file: %s\nException: %s" % (fileName) % (str(e)))
+        return Model(data)
