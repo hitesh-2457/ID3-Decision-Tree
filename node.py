@@ -38,13 +38,15 @@ class Tree:
     def print_tree(self):
         self.print_node(self.root)
 
-    def print_node(self, node):
-        if node.is_leaf():
-            print node.attr, ": ", node.targetCount[0]
-        else:
-            for ch in node.attrValues:
-                print node.attr, ": ", node.attrValues, ": ", node.targetCount, ": ", ch
-                self.print_node(node.childNodes[ch])
+    def print_node(self, node, depth=0):
+        for ch in node.attrValues:
+            for i in range(0, depth, 1):
+                print "| ",
+            if node.childNodes[ch].is_leaf():
+                print node.attr, " = ", ch, " : ", node.childNodes[ch].attr
+            else:
+                print node.attr, " = ", ch, " : "
+                self.print_node(node.childNodes[ch], depth=depth + 1)
 
     def train_id3(self, method):
         """
